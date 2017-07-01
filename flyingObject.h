@@ -1,6 +1,6 @@
 #ifndef flyingObject_h
 #define flyingObject_h
-
+#define _USE_MATH_DEFINES
 
 #include "point.h"
 #include "velocity.h"

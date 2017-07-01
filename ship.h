@@ -17,5 +17,8 @@ private:
 public:
 	Ship();
 	virtual void draw();
+	void moveRight();
+	void moveLeft();
+	float getAngle();
 };
 #endif /* ship_h */

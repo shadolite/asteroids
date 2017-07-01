@@ -10,3 +10,16 @@ void Ship::draw()
 {
 	drawShip(point, rotation, thrust);
 }
+
+void Ship::moveRight()
+{
+}
+
+void Ship::moveLeft()
+{
+}
+
+float Ship::getAngle()
+{
+	return angle;
+}

@@ -11,7 +11,6 @@
 
 #define BULLET_SPEED 5
 #define BULLET_LIFE 40
-#define _USE_MATH_DEFINES
 
 class Bullet : public FlyingObject
 {

@@ -2,6 +2,17 @@
 
 Rock::Rock()
 {
+	alive = true;
+	point.setX(random(-150, 150));
+	point.setY(random(-150, 150));
+
+	velocity.setDx(random(-1.0, 1.0)); //check
+	if (velocity.getDx() == 0)
+		velocity.setDx(0.5);
+
+	velocity.setDy(random(-1.0, 1.0)); //check
+	if (velocity.getDy() == 0)
+		velocity.setDy(0.5);
 }
 
 BigRock::BigRock()
@@ -17,7 +28,7 @@ void BigRock::draw()
 
 int BigRock::hit()
 {
-	return 0;
+	return points;
 }
 
 MediumRock::MediumRock()
@@ -33,7 +44,7 @@ void MediumRock::draw()
 
 int MediumRock::hit()
 {
-	return 0;
+	return points;
 }
 
 SmallRock::SmallRock()
@@ -49,5 +60,5 @@ void SmallRock::draw()
 
 int SmallRock::hit()
 {
-	return 0;
+	return points;
 }
