@@ -37,10 +37,10 @@ Game::Game(Point tl, Point br)
 	// Set up the initial conditions of the game
 	score = 0;
 
-	Rock * pRock;
 
-	for (int i = 0; 1 < AMOUNT_ROCK; i++)
+	for (int i = 0; i < AMOUNT_ROCK; i++)
 	{
+		Rock * pRock;
 		pRock = new BigRock;
 		vRocks.push_back(pRock);
 	}

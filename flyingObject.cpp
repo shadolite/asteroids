@@ -1,7 +1,14 @@
 /*************************************************************
 * File: flyingObject.cpp
 * Author: Amy Chambers
-*
+*wrap function if 200 -200, if -200 200
+if ><
+else if
+
+velocity.setDx(velocity.getDx() + MOVE_AMT * (-sin(M_Pi/180 * angle))
+
+Dan: the other one would be cos
+
 * Description: Contains the function bodies for flyingObject
 *************************************************************/
 
