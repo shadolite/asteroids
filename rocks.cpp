@@ -3,6 +3,9 @@
 Rock::Rock()
 {
 	alive = true;
+	points = 1;
+	angle = random(0.0, 360.0);
+
 	point.setX(random(-150, 150));
 	point.setY(random(-150, 150));
 
@@ -23,11 +26,12 @@ BigRock::BigRock()
 
 void BigRock::draw()
 {
-	drawLargeAsteroid(point, size);
+	drawLargeAsteroid(point, spin);
 }
 
 int BigRock::hit()
 {
+	kill();
 	return points;
 }
 
@@ -39,11 +43,12 @@ MediumRock::MediumRock()
 
 void MediumRock::draw()
 {
-	drawMediumAsteroid(point, size);
+	drawMediumAsteroid(point, spin);
 }
 
 int MediumRock::hit()
 {
+	kill();
 	return points;
 }
 
@@ -53,12 +58,14 @@ SmallRock::SmallRock()
 	spin = SMALL_ROCK_SPIN;
 }
 
+
 void SmallRock::draw()
 {
-	drawSmallAsteroid(point, size);
+	drawSmallAsteroid(point, spin);
 }
 
 int SmallRock::hit()
 {
+	kill();
 	return points;
 }

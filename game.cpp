@@ -45,9 +45,6 @@ Game::Game(Point tl, Point br)
 		vRocks.push_back(pRock);
 	}
 
-	// TODO: Set your rock pointer to a good initial value (e.g., NULL)
-	//rock = NULL;
-
 }
 
 /****************************************
@@ -72,6 +69,7 @@ void Game::advance()
 {
 	advanceBullets();
 	advanceRocks();
+	advanceShip();
 
 	handleCollisions();
 	cleanUpZombies();
@@ -115,47 +113,75 @@ void Game::advanceRocks()
 	{
 		if (vRocks[i]->isAlive())
 		{
-			// this bullet is alive, so tell it to move forward
+			// this rock is alive, so tell it to move forward
 			vRocks[i]->advance();
-
-			if (!isOnScreen(vRocks[i]->getPoint()))
-			{
-				// the bullet has left the screen
-				vRocks[i]->kill();
-			}
-
 		}
 	}
 }
 
+void Game::advanceShip()
+{
+	if (ship.isAlive())
+	{
+		ship.draw();
+		ship.advance();
+	}
+}
 /**************************************************************************
 * GAME :: BREAK ROCK
-* Create a rock of a random type according to the rules of the game.
+* Create a rock of a specific type according to the rules of the game.
 **************************************************************************/
-//Rock* Game::createRock()
-//{
-//	Rock* newRock = NULL;
-//	int type;
-//
-//	// TODO: Fill this in
-//	type = random(1, 4);
-//
-//	switch (type)
-//	{
-//	case 1:
-//		newRock = new SmallRock;
-//	case 4:
-//		break;
-//	case 2:
-//		newRock = new MediumRock;
-//		break;
-//	case 3:
-//		newRock = new BigRock;
-//		break;
-//	};
-//
-//	return newRock;
-//}
+void Game::breakRock(int rock)
+{
+	if (vRocks[rock]->getSize() == BIG_ROCK_SIZE)
+	{
+		for (int i = 0; i < 3; i++)
+		{
+			Rock * pRock;
+
+			switch (i)
+			{
+			case 0:
+				pRock = new MediumRock;
+				break;
+			case 1:
+				pRock = new MediumRock;
+				break;
+			case 2:
+				pRock = new SmallRock;
+				break;
+			}
+
+			vRocks.push_back(pRock);
+
+			delete pRock;
+			pRock = NULL;
+		}
+	}
+
+	else if (vRocks[rock]->getSize() == MEDIUM_ROCK_SIZE)
+	{
+		Rock * pRock;
+
+		for (int i = 0; i < 2; i++)
+		{
+			switch (i)
+			{
+			case 0:
+				pRock = new SmallRock;
+				break;
+			case 1:
+				pRock = new SmallRock;
+				break;
+			}
+
+			vRocks.push_back(pRock);
+		}
+
+		delete pRock;
+		pRock = NULL;
+	}
+}
 
 /**************************************************************************
 * GAME :: IS ON SCREEN
@@ -175,34 +201,35 @@ bool Game::isOnScreen(const Point & point)
 **************************************************************************/
 void Game::handleCollisions()
 {
-	//// now check for a hit (if it is close enough to any live bullets)
-	//for (int i = 0; i < bullets.size(); i++)
-	//{
-	//	if (bullets[i].isAlive())
-	//	{
-	//		// this bullet is alive, see if its too close
+	// now check for a hit (if it is close enough to any live bullets)
+	for (int i = 0; i < bullets.size(); i++)
+	{
+		if (bullets[i].isAlive())
+		{
+			for (int j = 0; j < vRocks.size(); j++)
+				if (vRocks[j]->isAlive())
+					if (getClosestDistance(bullets[i], *vRocks[j]) <= bullets[i].getSize() + vRocks[j]->getSize())
+					{
+						bullets[i].kill();
+						
+						if (vRocks[j]->getSize() > SMALL_ROCK_SIZE)
+						{
+							breakRock(j);
+						}
 
-	//		// check if the rock is at this point (in case it was hit)
-	//		if (rock != NULL && rock->isAlive())
-	//		{
-	//			// BTW, this logic could be more sophisiticated, but this will
-	//			// get the job done for now...
-	//			if (fabs(bullets[i].getPoint().getX() - rock->getPoint().getX()) < CLOSE_ENOUGH
-	//				&& fabs(bullets[i].getPoint().getY() - rock->getPoint().getY()) < CLOSE_ENOUGH)
-	//			{
-	//				//we have a hit!
+						vRocks[j]->kill();
+					}
+			// check if the rock is at this point (in case it was hit)
+		} // if bullet is alive
+	}
 
-	//				// hit the rock
-	//				int points = rock->hit();
-	//				score += points;
-
-	//				// the bullet is dead as well
-	//				bullets[i].kill();
-	//			}
-	//		}
-	//	} // if bullet is alive
-
-	//} // for bullets
+	for (int j = 0; j < vRocks.size(); j++)
+		if (vRocks[j]->isAlive())
+			if (getClosestDistance(ship, *vRocks[j]) <= ship.getSize() + vRocks[j]->getSize())
+			{
+				ship.kill();
+				vRocks[j]->kill();
+			}
 }
 
 /**************************************************************************
@@ -211,40 +238,52 @@ void Game::handleCollisions()
 **************************************************************************/
 void Game::cleanUpZombies()
 {
-	//// check for dead rock
-	//if (rock != NULL && !rock->isAlive())
-	//{
-	//	// the rock is dead, but the memory is not freed up yet
+	// check for dead rock
+	vector<Rock*>::iterator rockIt = vRocks.begin();
+	while (rockIt != vRocks.end())
+	{
+		Rock* pRock = *rockIt;
+		// Asteroids Hint:
+		// If we had a list of pointers, we would need this line instead:
+		//Bullet* pBullet = *bulletIt;
 
-	//	// TODO: Clean up the memory used by the rock
-	//	delete rock;
-	//	rock = NULL;
+		if (!pRock->isAlive())
+		{
+			// If we had a list of pointers, we would need to delete the memory here...
+			delete pRock;
+			pRock = NULL;
 
-	//}
+			// remove from list and advance
+			rockIt = vRocks.erase(rockIt);
+		}
+		else
+		{
+			rockIt++; // advance
+		}
+	}
 
-	//// Look for dead bullets
-	//vector<Bullet>::iterator bulletIt = bullets.begin();
-	//while (bulletIt != bullets.end())
-	//{
-	//	Bullet bullet = *bulletIt;
-	//	// Asteroids Hint:
-	//	// If we had a list of pointers, we would need this line instead:
-	//	//Bullet* pBullet = *bulletIt;
+	// Look for dead bullets
+	vector<Bullet>::iterator bulletIt = bullets.begin();
+	while (bulletIt != bullets.end())
+	{
+		Bullet bullet = *bulletIt;
+		// Asteroids Hint:
+		// If we had a list of pointers, we would need this line instead:
+		//Bullet* pBullet = *bulletIt;
 
-	//	if (!bullet.isAlive())
-	//	{
-	//		// If we had a list of pointers, we would need to delete the memory here...
+		if (!bullet.isAlive())
+		{
+			// If we had a list of pointers, we would need to delete the memory here...
 
 
-	//		// remove from list and advance
-	//		bulletIt = bullets.erase(bulletIt);
-	//	}
-	//	else
-	//	{
-	//		bulletIt++; // advance
-	//	}
-	//}
-
+			// remove from list and advance
+			bulletIt = bullets.erase(bulletIt);
+		}
+		else
+		{
+			bulletIt++; // advance
+		}
+	}
 }
 
 /***************************************
@@ -264,11 +303,21 @@ void Game::handleInput(const Interface & ui)
 		ship.moveRight();
 	}
 
+	if (ui.isUp())
+	{
+		ship.shipThrustUp();
+	}
+
+	if (ui.isDown())
+	{
+		ship.shipThrustDown();
+	}
+
 	// Check for "Spacebar
 	if (ui.isSpace())
 	{
 		Bullet newBullet;
-		newBullet.fire(ship.getPoint(), ship.getAngle());
+		newBullet.fire(ship.getVelocity(), ship.getPoint(), ship.getAngle());
 
 		bullets.push_back(newBullet);
 	}
@@ -282,7 +331,10 @@ void Game::draw(const Interface & ui)
 {
 	// draw the rock
 		// draw the ship
-	ship.draw();
+	if (ship.isAlive())
+	{
+		ship.draw();
+	}
 
 	for (int i = 0; i < vRocks.size(); i++)
 	{
@@ -317,8 +369,8 @@ void Game::draw(const Interface & ui)
  * Description: Determine how close these two objects will
  *   get in between the frames.
  **********************************************************/
-/*
-float Game :: getClosestDistance(const FlyingObject &obj1, const FlyingObject &obj2) const
+
+float Game :: getClosestDistance(FlyingObject &obj1, FlyingObject &obj2)
 {
    // find the maximum distance traveled
    float dMax = max(abs(obj1.getVelocity().getDx()), abs(obj1.getVelocity().getDy()));
@@ -344,5 +396,5 @@ float Game :: getClosestDistance(const FlyingObject &obj1, const FlyingObject &o
    
    return sqrt(distMin);
 }
-*/
+
 

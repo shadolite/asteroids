@@ -9,22 +9,27 @@
 *************************************************************/
 Bullet::Bullet()
 {
-	point.setX(200);
-	point.setY(-200);
 	alive = true;
 	hp = BULLET_LIFE;
+	size = BULLET_SIZE;
 };
 
-void Bullet::fire(const Point point, const float angle)
+void Bullet::fire(Velocity shipVelocity, const Point shipPoint, const float shipAngle)
 {
-	float Dx = BULLET_SPEED * (-cos(M_PI / 180.0 * angle));
-	float Dy = BULLET_SPEED * (sin(M_PI / 180.0 * angle));
+	setPoint(shipPoint);
+	float Dx = BULLET_SPEED * (-sin(M_PI / 180.0 * shipAngle));
+	float Dy = BULLET_SPEED * (cos(M_PI / 180.0 * shipAngle));
 
-	velocity.setDx(Dx);
-	velocity.setDy(Dy);
+	velocity.setDx(Dx + shipVelocity.getDx());
+	velocity.setDy(Dy + shipVelocity.getDx());
 }
 
 void Bullet::draw()
 {
 	drawDot(point);
+	hp -= 1;
+	if (hp == 0)
+	{
+		alive = false;
+	}
 }

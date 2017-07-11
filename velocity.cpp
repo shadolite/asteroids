@@ -4,7 +4,7 @@
 * Author:
 *    Amy Chambers
 * Summary:
-*    Everythibng needed for manipulation of the lander velocity.
+*    Everything needed for manipulation of the lander velocity.
 ************************************************************************/
 
 #include "velocity.h"

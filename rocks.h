@@ -14,7 +14,6 @@
 class Rock : public FlyingObject
 {
 protected:
-	int size;
 	int points;
 	int spin;
 
@@ -49,5 +48,6 @@ public:
 	virtual void draw();
 	virtual int hit();
 };
+
 
 #endif /* rocks_h */

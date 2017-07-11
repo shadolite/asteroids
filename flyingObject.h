@@ -13,6 +13,8 @@ protected:
 	Velocity velocity;
 	bool alive;
 	int hp;
+	float angle;
+	float size;
 
 public:
 	Velocity getVelocity() const;
@@ -23,5 +25,7 @@ public:
 	bool isAlive();
 	void advance();
 	virtual void draw() = 0;
+	void wrap();
+	float getSize();
 };
 #endif /* flyingObject_h */

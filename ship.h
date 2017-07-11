@@ -6,13 +6,13 @@
 
 #define ROTATE_AMOUNT 6
 #define THRUST_AMOUNT 0.5
+#define DOWN_THRUST_AMOUNT -0.5
 
 class Ship : public FlyingObject
 {
 private:
 	bool thrust;
 	float angle;
-	int rotation;
 
 public:
 	Ship();
@@ -20,5 +20,7 @@ public:
 	void moveRight();
 	void moveLeft();
 	float getAngle();
+	void shipThrustUp();
+	void shipThrustDown();
 };
 #endif /* ship_h */

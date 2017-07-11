@@ -72,8 +72,11 @@ private:
 	bool isOnScreen(const Point & point);
 	void advanceBullets();
 	void advanceRocks();
+	void advanceShip();
 	void handleCollisions();
+	void breakRock(int rock);
 	void cleanUpZombies();
+	float getClosestDistance(FlyingObject &obj1, FlyingObject &obj2);
 };
 
 
