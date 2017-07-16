@@ -1,5 +1,4 @@
 #include "bullet.h"
-#include <cmath>
 
 /*************************************************************
 * File: bullet.cpp
@@ -27,7 +26,9 @@ void Bullet::fire(Velocity shipVelocity, const Point shipPoint, const float ship
 void Bullet::draw()
 {
 	drawDot(point);
+
 	hp -= 1;
+
 	if (hp == 0)
 	{
 		alive = false;

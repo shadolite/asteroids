@@ -8,6 +8,8 @@
 #define GAME_H
 
 #include <vector>
+#include <limits>
+#include <algorithm>
 
 #include "uiDraw.h"
 #include "uiInteract.h"
@@ -18,6 +20,8 @@
 #include "ship.h"
 
 #define CLOSE_ENOUGH 15
+#define AMOUNT_ROCK 5
+#define OFF_SCREEN_BORDER_AMOUNT 5
 
 
  /*****************************************
@@ -58,10 +62,10 @@ private:
 	// The coordinates of the screen
 	Point topLeft;
 	Point bottomRight;
-	Ship ship;
 
 	int score;
 
+	Ship ship;
 	std::vector<Bullet> bullets;
 	std::vector<Rock *> vRocks;
 
@@ -73,6 +77,7 @@ private:
 	void advanceBullets();
 	void advanceRocks();
 	void advanceShip();
+	void hitRock(int rock);
 	void handleCollisions();
 	void breakRock(int rock);
 	void cleanUpZombies();

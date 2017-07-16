@@ -1,5 +1,6 @@
 #ifndef rocks_h
 #define rocks_h
+
 #include "flyingObject.h"
 
 #define BIG_ROCK_SIZE 16

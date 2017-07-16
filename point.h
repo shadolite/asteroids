@@ -13,6 +13,7 @@
 #define POINT_H
 
 #include <iostream>
+#include <cassert>
 
 /*********************************************
  * POINT

@@ -12,7 +12,6 @@ class Ship : public FlyingObject
 {
 private:
 	bool thrust;
-	float angle;
 
 public:
 	Ship();

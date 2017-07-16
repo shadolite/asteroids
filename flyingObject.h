@@ -6,6 +6,9 @@
 #include "velocity.h"
 #include "uiDraw.h"
 
+#include <cassert>
+#include <cmath>
+
 class FlyingObject
 {
 protected:

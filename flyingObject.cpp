@@ -7,8 +7,6 @@
 *************************************************************/
 
 #include "flyingObject.h"
-#include <cmath>
-#include <cassert>
 
 Velocity FlyingObject::getVelocity() const
 {
